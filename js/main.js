@@ -39,7 +39,8 @@ window.onload = function() {
             if (checkIntersect(player, enemies)) {
                 player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
                     .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN);
-                console.log('GAME OVER!!');
+                // console.log('GAME OVER!!');
+                alert('GAME OVER!!');
             }
         });
         game.rootScene.addEventListener(Event.TOUCH_START, function(e) {
@@ -95,7 +96,7 @@ var Ota = enchant.Class.create(enchant.Sprite, {
 
 function checkIntersect(player, enemies) {
     for (var i = 0;i < enemies.length;i++) {
-        if (player.intersect(enemies[i])) {
+        if (player.within(enemies[i], 20)) {
             return true;
         }
     }
