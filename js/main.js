@@ -1,5 +1,7 @@
 enchant();
 
+var BORDER_POINT = 100000;
+
 var game = null;
 var lootscene = null,
     resultscene = null;
@@ -15,6 +17,7 @@ window.onload = function() {
     game.preload('./img/street.png');
     game.preload('./img/start.png');
     game.preload('./img/Otaku.png');
+    game.preload('./img/school.png');
     game.onload = function() {
         var botton = new Sprite(236,48);
         botton.image = game.assets['./img/start.png'];
@@ -96,6 +99,18 @@ var Ota = enchant.Class.create(enchant.Sprite, {
     }
 });
 
+var School = enchant.Class.create(enchant.Sprite, {
+    initialize: function() {
+        enchant.Sprite.call(this, 298, 304);
+        this.image = game.assets['./img/school.png'];
+        this.x = 1700;
+        this.y = 0;
+        this.speed = 5;
+        this.onenterframe = function() {
+            this.x -= this.speed;
+        }
+    }
+});
 
 function checkIntersect(player, enemies) {
     for (var i = 0;i < enemies.length;i++) {
@@ -104,6 +119,13 @@ function checkIntersect(player, enemies) {
         }
     }
     return false;
+}
+
+function removeEnemies(enemies) {
+    for (var i = 0;i < enemies.length;i++) {
+        lootscene.removeChild(enemies[i].otaku);
+        lootscene.removeChild(enemies[i]);
+    }
 }
 
 var gameover = function(score) {
@@ -125,27 +147,28 @@ var gameover = function(score) {
 var lootgame = function(){
     lootscene = new Scene();
     game.frame = 0;
-    var background = new Sprite(750, 250);
-    street1 = new Sprite(1600, 600),
+    var st1_speed = 5, st2_speed = 5;
+    var street1 = new Sprite(1600, 600),
         street2 = new Sprite(1600, 600);
     street1.image = street2.image = game.assets['./img/street.png'];
     street1.onenterframe = function() {
         if (street2.x + street2.width == game.width) {
             street1.moveTo(game.width, 0);
         }
-        street1.x -= 5;
+        street1.x -= st1_speed;
     }
     street2.onenterframe = function() {
         if (street1.x + street1.width == game.width) {
             street2.moveTo(game.width, 0);
         }
-        street2.x -= 5;
+        street2.x -= st2_speed;
     }
-    lootscene.addChild(background);
     lootscene.addChild(street1);
     lootscene.addChild(street2);
     var player = new Player();
     var enemies = [];
+    var school = null;
+    var isEnd = false;
     lootscene.addChild(player);
     lootscene.backgroundColor = '#7ecef4';
 
@@ -157,9 +180,9 @@ var lootgame = function(){
 
     lootscene.addEventListener(Event.ENTER_FRAME, function() {
         player.walk();
-        pts += parseInt(100*game.frame/game.fps);
+        pts = isEnd? pts : pts + parseInt(100*game.frame/game.fps);
         scorelabel.text = pts.toString()+'pts';
-        if ((game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
+        if (!isEnd && (game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
             enemies.push(new Enemy());
             lootscene.insertBefore(enemies[enemies.length - 1], player);
         }
@@ -172,7 +195,20 @@ var lootgame = function(){
                 // })
             // console.log('GAME OVER!!');
         }
-
+        if (pts > BORDER_POINT && school == null) {
+            isSchool = true;
+            school = new School();
+            lootscene.insertBefore(school, enemies[enemies.length - 1]);
+        }
+        if (school !== null && player.intersect(school)) {
+            removeEnemies(enemies);
+        }
+        if (school !== null && player.within(school, 100) && !isEnd) {
+            isEnd = true;
+            school.speed = st1_speed = st2_speed = 0;
+            player.tl.moveBy(100, -120, 40, enchant.Easing.CUBIC_EASEOUT)
+                .scaleBy(0, 40, enchant.Easing.CUBIC_EASEOUT);
+        };
     });
     lootscene.addEventListener(Event.TOUCH_START, function(e) {
         player.jump();
