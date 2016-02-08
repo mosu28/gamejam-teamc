@@ -27,12 +27,19 @@ window.onload = function() {
         game.rootScene.addChild(background1);
         game.rootScene.addChild(background2);
         var player = new Player();
+        var enemies = [];
         game.rootScene.addChild(player);
         game.rootScene.backgroundColor = '#7ecef4';
         game.rootScene.addEventListener(Event.ENTER_FRAME, function() {
             player.walk();
             if ((game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
-                game.rootScene.addChild(new Enemy());
+                enemies.push(new Enemy());
+                game.rootScene.addChild(enemies[enemies.length - 1]);
+            }
+            if (checkIntersect(player, enemies)) {
+                player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
+                    .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN);
+                console.log('GAME OVER!!');
             }
         });
         game.rootScene.addEventListener(Event.TOUCH_START, function(e) {
@@ -85,3 +92,12 @@ var Ota = enchant.Class.create(enchant.Sprite, {
         enchant.Sprite.call(this, 32, 32);
     }
 });
+
+function checkIntersect(player, enemies) {
+    for (var i = 0;i < enemies.length;i++) {
+        if (player.intersect(enemies[i])) {
+            return true;
+        }
+    }
+    return false;
+}
