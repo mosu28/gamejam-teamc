@@ -6,6 +6,7 @@ window.onload = function() {
     game = new Game(1600, 600);
     game.fps = 40;
     game.preload('./img/Player.png');
+    game.preload('./img/Enemy.png');
     game.preload('./img/Kari/test.png');
     game.preload('./img/Kari/cut_fujisan2.gif');
     game.preload('./img/street.png');
@@ -85,11 +86,11 @@ var Player = enchant.Class.create(enchant.Sprite, {
 
 var Enemy = enchant.Class.create(enchant.Sprite, {
     initialize: function() {
-        enchant.Sprite.call(this, 32, 32);
-        this.x = 500;
-        this.y = 200;
-        this.image = game.assets['./img/Kari/test.png'];
-        this.frame = 5;
+        enchant.Sprite.call(this, 138, 200);
+        this.x = 1500;
+        this.y = 130;
+        this.image = game.assets['./img/Enemy.png'];
+        this.frame = 0;
         this.onenterframe = function() {
             this.x -= 5;
         }
