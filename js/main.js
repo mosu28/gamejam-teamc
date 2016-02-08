@@ -53,14 +53,14 @@ window.onload = function() {
             }
 
 
-            // if (checkIntersect(player, enemies)) {
-            //     player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
-            //         .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN)
-            //         .then(function(){
-            //             player.dead();
-            //         })
-            //     // console.log('GAME OVER!!');
-            // }
+            if (checkIntersect(player, enemies)) {
+                // player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
+                //     .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN)
+                    // .then(function(){
+                        player.dead();
+                    // })
+                console.log('GAME OVER!!');
+            }
 
         });
         game.rootScene.addEventListener(Event.TOUCH_START, function(e) {
@@ -103,20 +103,22 @@ var Enemy = enchant.Class.create(enchant.Sprite, {
         this.image = game.assets['./img/Enemy.png'];
         this.frame = 0;
         this.isSummon = false;
+        this.otaku = null;
         this.onenterframe = function() {
             this.frame = this.frame == 2? 2 : this.frame + 0.0625;
             this.x -= 5;
             if (this.frame == 2 && !this.isSummon) {
                 this.isSummon = true;
-                this.summon();
+                this.otaku = this.summon();
+                game.rootScene.addChild(this.otaku);
             }
         }
     },
     summon: function() {
         var ota = new Ota();
         ota.x = this.x + 100;
-        ota.y = this.y + 20;
-        game.rootScene.addChild(ota);
+        ota.y = this.y - 20;
+        return ota;
     }
 });
 
@@ -124,9 +126,15 @@ var Ota = enchant.Class.create(enchant.Sprite, {
     initialize: function() {
         enchant.Sprite.call(this, 88, 236);
         this.image = game.assets['./img/Otaku.png'];
-        this.rotate(-90);
+        this.vs = 5;
+        this.tl.delay(20)
+            .then(function() {
+                this.rotate(-90);
+                this.y += 40;
+                this.vs = 15;
+            });
         this.onenterframe = function() {
-            this.x -= 15;
+            this.x -= this.vs;
         }
     }
 });
@@ -134,7 +142,7 @@ var Ota = enchant.Class.create(enchant.Sprite, {
 
 function checkIntersect(player, enemies) {
     for (var i = 0;i < enemies.length;i++) {
-        if (player.within(enemies[i], 20)) {
+        if (enemies[i].otaku !== null && player.within(enemies[i].otaku, 118)) {
             return true;
         }
     }
