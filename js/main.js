@@ -47,9 +47,11 @@ window.onload = function() {
             }
             if (checkIntersect(player, enemies)) {
                 player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
-                    .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN);
+                    .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN)
+                    .then(function(){
+                        player.dead();
+                    })
                 // console.log('GAME OVER!!');
-                alert('GAME OVER!!');
             }
         });
         game.rootScene.addEventListener(Event.TOUCH_START, function(e) {
@@ -76,7 +78,12 @@ var Player = enchant.Class.create(enchant.Sprite, {
         if (this.y != this.high) return;
         this.tl.moveBy(0, -80, 10, enchant.Easing.CUBIC_EASEOUT)
             .moveBy(0, 80, 10, enchant.Easing.CUBIC_EASEIN);
-    }
+    },
+    dead:function(){
+        alert('GAME OVER!!');
+        this.frame = 3;
+        game.end();
+        }
 
 });
 
