@@ -46,7 +46,7 @@ window.onload = function() {
             player.walk();
             pts += parseInt(100*game.frame/game.fps);
             scorelabel.text = pts.toString()+'pts';
-            if ((game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
+            if ((game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 6) {
                 enemies.push(new Enemy());
                 game.rootScene.addChild(enemies[enemies.length - 1]);
             }
