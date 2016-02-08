@@ -33,7 +33,7 @@ window.onload = function() {
 
         var pts = 0;
         var scorelabel = new Label("");
-        scorelabel.color = '#fff';
+        scorelabel.color = '#ffff';
         scorelabel.moveTo( 10, 20 );
         game.rootScene.addChild(scorelabel);
 
