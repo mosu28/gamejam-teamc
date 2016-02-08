@@ -4,7 +4,7 @@ var game = null;
 
 window.onload = function() {
     game = new Game(480, 270);
-    game.fps = 10;
+    game.fps = 30;
     game.preload('./img/Kari/test.png');
     game.preload('./img/Kari/cut_fujisan2.gif');
     game.onload = function() {
@@ -30,8 +30,17 @@ window.onload = function() {
         var enemies = [];
         game.rootScene.addChild(player);
         game.rootScene.backgroundColor = '#7ecef4';
+
+        var pts = 0;
+        var scorelabel = new Label("");
+        scorelabel.color = '#ffff';
+        scorelabel.moveTo( 10, 20 );
+        game.rootScene.addChild(scorelabel);
+
         game.rootScene.addEventListener(Event.ENTER_FRAME, function() {
             player.walk();
+           pts += parseInt(100*game.frame/game.fps);
+         scorelabel.text = pts.toString()+'pts';
             if ((game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
                 enemies.push(new Enemy());
                 game.rootScene.addChild(enemies[enemies.length - 1]);
@@ -68,6 +77,7 @@ var Player = enchant.Class.create(enchant.Sprite, {
         this.tl.moveBy(0, -80, 10, enchant.Easing.CUBIC_EASEOUT)
             .moveBy(0, 80, 10, enchant.Easing.CUBIC_EASEIN);
     }
+
 });
 
 var Enemy = enchant.Class.create(enchant.Sprite, {
@@ -93,6 +103,7 @@ var Ota = enchant.Class.create(enchant.Sprite, {
         enchant.Sprite.call(this, 32, 32);
     }
 });
+
 
 function checkIntersect(player, enemies) {
     for (var i = 0;i < enemies.length;i++) {
