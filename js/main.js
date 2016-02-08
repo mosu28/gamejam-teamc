@@ -57,8 +57,8 @@ var Player = enchant.Class.create(enchant.Sprite, {
     },
     jump: function() {
         if (this.y != this.high) return;
-        this.tl.moveBy(0, -80, 5, enchant.Easing.CUBIC_EASEOUT)
-            .moveBy(0, 80, 5, enchant.Easing.CUBIC_EASEIN);
+        this.tl.moveBy(0, -80, 10, enchant.Easing.CUBIC_EASEOUT)
+            .moveBy(0, 80, 10, enchant.Easing.CUBIC_EASEIN);
     }
 });
 
