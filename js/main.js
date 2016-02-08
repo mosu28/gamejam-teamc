@@ -16,9 +16,6 @@ window.onload = function() {
     game.preload('./img/start.png');
     game.preload('./img/Otaku.png');
     game.onload = function() {
-        var gameoverImage = new Label("うわああああん疲れたもおおおん");
-        gameoverImage.color = "#fff";
-        game.rootScene.addChild(gameoverImage);
         var botton = new Sprite(236,48);
         botton.image = game.assets['./img/start.png'];
         botton.moveTo(400,300);
@@ -109,7 +106,7 @@ function checkIntersect(player, enemies) {
     return false;
 }
 
-var gameover = function() {
+var gameover = function(score) {
     resultscene = new Scene();
     resultscene.backgroundColor = 'rgba(0,0,0,1)';
     var gameoverImage = new Label("うわああああん疲れたもおおおん");
@@ -120,7 +117,7 @@ var gameover = function() {
     gameoverImage.font = "50px cursive";
     resultscene.addChild(gameoverImage);
     game.replaceScene(resultscene);
-    scene.ontouchstart = function() {
+    resultscene.ontouchstart = function() {
         game.popScene();
     }
 };
