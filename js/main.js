@@ -1,7 +1,9 @@
 enchant();
 
 var game = null;
-var lootscene = null;
+var lootscene = null,
+    resultscene = null;
+
 
 window.onload = function() {
     game = new Game(1600, 600);
@@ -108,16 +110,16 @@ function checkIntersect(player, enemies) {
 }
 
 var gameover = function() {
-    var scene = new Scene();
-    scene.backgroundColor = 'rgba(0,0,0,1)';
+    resultscene = new Scene();
+    resultscene.backgroundColor = 'rgba(0,0,0,1)';
     var gameoverImage = new Label("うわああああん疲れたもおおおん");
     gameoverImage.x = 400;                                      // 横位置調整
     gameoverImage.y = 200;
     gameoverImage.width=700;
     gameoverImage.color = '#fff';
     gameoverImage.font = "50px cursive";
-    scene.addChild(gameoverImage);
-    game.replaceScene(scene);
+    resultscene.addChild(gameoverImage);
+    game.replaceScene(resultscene);
     scene.ontouchstart = function() {
         game.popScene();
     }
