@@ -3,29 +3,33 @@ enchant();
 var game = null;
 
 window.onload = function() {
-    game = new Game(480, 270);
-    game.fps = 30;
+    game = new Game(1600, 600);
+    game.fps = 40;
+    game.preload('./img/Player.png');
     game.preload('./img/Kari/test.png');
     game.preload('./img/Kari/cut_fujisan2.gif');
+    game.preload('./img/street.png');
     game.onload = function() {
         game.frame = 0;
-        var background1 = new Sprite(750, 250),
-            background2 = new Sprite(750, 250);
-        background1.image = background2.image = game.assets['./img/Kari/cut_fujisan2.gif'];
-        background1.onenterframe = function() {
-            if (background2.x + background2.width == game.width) {
-                background1.moveTo(game.width, 0);
+        var background = new Sprite(750, 250);
+            street1 = new Sprite(1600, 600),
+            street2 = new Sprite(1600, 600);
+        street1.image = street2.image = game.assets['./img/street.png'];
+        street1.onenterframe = function() {
+            if (street2.x + street2.width == game.width) {
+                street1.moveTo(game.width, 0);
             }
-            background1.x -= 5;
+            street1.x -= 5;
         }
-        background2.onenterframe = function() {
-            if (background1.x + background1.width == game.width) {
-                background2.moveTo(game.width, 0);
+        street2.onenterframe = function() {
+            if (street1.x + street1.width == game.width) {
+                street2.moveTo(game.width, 0);
             }
-            background2.x -= 5;
+            street2.x -= 5;
         }
-        game.rootScene.addChild(background1);
-        game.rootScene.addChild(background2);
+        game.rootScene.addChild(background);
+        game.rootScene.addChild(street1);
+        game.rootScene.addChild(street2);
         var player = new Player();
         var enemies = [];
         game.rootScene.addChild(player);
@@ -45,12 +49,11 @@ window.onload = function() {
                 enemies.push(new Enemy());
                 game.rootScene.addChild(enemies[enemies.length - 1]);
             }
-            if (checkIntersect(player, enemies)) {
-                player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
-                    .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN);
-                // console.log('GAME OVER!!');
-                alert('GAME OVER!!');
-            }
+            // if (checkIntersect(player, enemies)) {
+            //     player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
+            //         .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN);
+            //     alert('GAME OVER!!');
+            // }
         });
         game.rootScene.addEventListener(Event.TOUCH_START, function(e) {
             player.jump();
@@ -61,21 +64,21 @@ window.onload = function() {
 
 var Player = enchant.Class.create(enchant.Sprite, {
     initialize: function() {
-        enchant.Sprite.call(this, 32, 32);
-        this.x = 80;
-        this.y = 200;
+        enchant.Sprite.call(this, 138, 190);
+        this.x = 50;
+        this.y = 140;
         this.high = this.y,
         this.isJump = false;
         this.frame = 0;
-        this.image = game.assets['./img/Kari/test.png'];
+        this.image = game.assets['./img/Player.png'];
     },
     walk: function() {
-        this.frame = this.frame == 2? 0 : this.frame + 1;
+        this.frame = this.frame == 2? 0 : this.frame + 0.25;
     },
     jump: function() {
         if (this.y != this.high) return;
-        this.tl.moveBy(0, -80, 10, enchant.Easing.CUBIC_EASEOUT)
-            .moveBy(0, 80, 10, enchant.Easing.CUBIC_EASEIN);
+        this.tl.moveBy(0, -160, 20, enchant.Easing.CUBIC_EASEOUT)
+            .moveBy(0, 160, 20, enchant.Easing.CUBIC_EASEIN);
     }
 
 });
