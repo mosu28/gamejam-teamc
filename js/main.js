@@ -1,7 +1,9 @@
 enchant();
 
 var game = null;
-var lootscene = null;
+var lootscene = null,
+    resultscene = null;
+
 
 window.onload = function() {
     game = new Game(1600, 600);
@@ -14,9 +16,6 @@ window.onload = function() {
     game.preload('./img/start.png');
     game.preload('./img/Otaku.png');
     game.onload = function() {
-        var gameoverImage = new Label("うわああああん疲れたもおおおん");
-        gameoverImage.color = "#fff";
-        game.rootScene.addChild(gameoverImage);
         var botton = new Sprite(236,48);
         botton.image = game.assets['./img/start.png'];
         botton.moveTo(400,300);
@@ -107,18 +106,18 @@ function checkIntersect(player, enemies) {
     return false;
 }
 
-var gameover = function() {
-    var scene = new Scene();
-    scene.backgroundColor = 'rgba(0,0,0,1)';
+var gameover = function(score) {
+    resultscene = new Scene();
+    resultscene.backgroundColor = 'rgba(0,0,0,1)';
     var gameoverImage = new Label("うわああああん疲れたもおおおん");
     gameoverImage.x = 400;                                      // 横位置調整
     gameoverImage.y = 200;
     gameoverImage.width=700;
     gameoverImage.color = '#fff';
     gameoverImage.font = "50px cursive";
-    scene.addChild(gameoverImage);
-    game.replaceScene(scene);
-    scene.ontouchstart = function() {
+    resultscene.addChild(gameoverImage);
+    game.replaceScene(resultscene);
+    resultscene.ontouchstart = function() {
         game.popScene();
     }
 };
