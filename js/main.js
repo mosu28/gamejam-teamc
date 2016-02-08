@@ -162,15 +162,15 @@ var lootgame = function(){
         scorelabel.text = pts.toString()+'pts';
         if ((game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
             enemies.push(new Enemy());
-            lootscene.addChild(enemies[enemies.length - 1]);
+            lootscene.insertBefore(enemies[enemies.length - 1], player);
         }
 
         if (checkIntersect(player, enemies)) {
-            player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
-                .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN)
-                .then(function(){
+            // player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
+            //     .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN)
+            //     .then(function(){
                     player.dead();
-                })
+                // })
             // console.log('GAME OVER!!');
         }
 
