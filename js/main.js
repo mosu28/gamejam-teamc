@@ -10,6 +10,7 @@ window.onload = function() {
     game.preload('./img/Kari/test.png');
     game.preload('./img/Kari/cut_fujisan2.gif');
     game.preload('./img/street.png');
+    game.preload('./img/Otaku.png');
     game.onload = function() {
         game.frame = 0;
         var background = new Sprite(750, 250);
@@ -51,6 +52,7 @@ window.onload = function() {
                 game.rootScene.addChild(enemies[enemies.length - 1]);
             }
 
+
             // if (checkIntersect(player, enemies)) {
             //     player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
             //         .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN)
@@ -79,7 +81,7 @@ var Player = enchant.Class.create(enchant.Sprite, {
         this.image = game.assets['./img/Player.png'];
     },
     walk: function() {
-        this.frame = this.frame == 2? 0 : this.frame + 0.25;
+        this.frame = this.frame == 3? 0 : this.frame + 0.125;
     },
     jump: function() {
         if (this.y != this.high) return;
@@ -100,20 +102,32 @@ var Enemy = enchant.Class.create(enchant.Sprite, {
         this.y = 130;
         this.image = game.assets['./img/Enemy.png'];
         this.frame = 0;
+        this.isSummon = false;
         this.onenterframe = function() {
+            this.frame = this.frame == 2? 2 : this.frame + 0.0625;
             this.x -= 5;
+            if (this.frame == 2 && !this.isSummon) {
+                this.isSummon = true;
+                this.summon();
+            }
         }
     },
     summon: function() {
-        var ota = new Ota(32, 32);
-        ota.x = this.x + 30;
-        ota.y = this.y;
+        var ota = new Ota();
+        ota.x = this.x + 100;
+        ota.y = this.y + 20;
+        game.rootScene.addChild(ota);
     }
 });
 
 var Ota = enchant.Class.create(enchant.Sprite, {
     initialize: function() {
-        enchant.Sprite.call(this, 32, 32);
+        enchant.Sprite.call(this, 88, 236);
+        this.image = game.assets['./img/Otaku.png'];
+        this.rotate(-90);
+        this.onenterframe = function() {
+            this.x -= 15;
+        }
     }
 });
 
