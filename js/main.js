@@ -180,7 +180,7 @@ var lootgame = function(){
 
     lootscene.addEventListener(Event.ENTER_FRAME, function() {
         player.walk();
-        pts += parseInt(100*game.frame/game.fps);
+        pts = isEnd? pts : pts + parseInt(100*game.frame/game.fps);
         scorelabel.text = pts.toString()+'pts';
         if (!isEnd && (game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
             enemies.push(new Enemy());
