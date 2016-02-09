@@ -1,6 +1,6 @@
 enchant();
 
-var BORDER_POINT = 100000;
+var BORDER_POINT = 1000000;
 
 var game = null;
 var lootscene = null,
