@@ -33,21 +33,27 @@ window.onload = function() {
 
 var Player = enchant.Class.create(enchant.Sprite, {
     initialize: function() {
-        enchant.Sprite.call(this, 138, 190);
+        enchant.Sprite.call(this, 138, 210);
         this.x = 50;
-        this.y = 140;
+        this.y = 130;
         this.high = this.y,
             this.isJump = false;
-        this.frame = 0;
+        this.frame = 4;
         this.image = game.assets['./img/Player.png'];
     },
     walk: function() {
-        this.frame = this.frame == 3? 0 : this.frame + 0.125;
+        if (this.frame != 5) {
+            this.frame = this.frame >= 3? 0 : this.frame + 0.125;
+        }
     },
     jump: function() {
         if (this.y != this.high) return;
+        this.frame = 5;
         this.tl.moveBy(0, -160, 20, enchant.Easing.CUBIC_EASEOUT)
-            .moveBy(0, 160, 20, enchant.Easing.CUBIC_EASEIN);
+            .moveBy(0, 160, 20, enchant.Easing.CUBIC_EASEIN)
+            .then(function() {
+                this.frame = 1;
+            });
     },
     dead:function(score){
         alert('GAME OVER!!');
@@ -120,6 +126,15 @@ function checkIntersect(player, enemies) {
         }
     }
     return false;
+}
+
+function removeAvoidance(player, enemies) {
+    // for (var i = 0;i < enemies.length;i++) {
+    //     if (player.x > enemies[i].otaku.x) {
+    //         enemies[i]
+    //         lootscene.removeChild(enemies[i]);
+    //     }
+    // }
 }
 
 function removeEnemies(enemies) {
@@ -208,6 +223,7 @@ var lootgame = function(){
             school = new School();
             lootscene.insertBefore(school, enemies[enemies.length - 1]);
         }
+        removeAvoidance(player, enemies);
         if (school !== null && player.intersect(school)) {
             removeEnemies(enemies);
         }
@@ -215,10 +231,7 @@ var lootgame = function(){
             isEnd = true;
             school.speed = st1_speed = st2_speed = 0;
             player.tl.moveBy(100, -120, 40, enchant.Easing.CUBIC_EASEOUT)
-                .scaleBy(0, 40, enchant.Easing.CUBIC_EASEOUT)
-                .then(function() {
-                    window.location.href = "./ending.html";
-                });
+                .scaleBy(0, 40, enchant.Easing.CUBIC_EASEOUT);
         };
     });
     lootscene.addEventListener(Event.TOUCH_START, function(e) {
