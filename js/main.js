@@ -19,19 +19,24 @@ window.onload = function() {
     game.preload('./img/Otaku.png');
     game.preload('./img/school.png');
     game.preload('./img/Enemy2.png');
+    game.preload("./music/OP.mp3");
+
+
     game.onload = function() {
+        game.assets['./music/OP.mp3'].play();
         var botton = new Sprite(236,48);
         botton.image = game.assets['./img/start.png'];
         botton.x = 50;
         botton.y = 100;
-        game.rootScene.addChild(botton);
+
         botton.ontouchstart = function() {
             lootgame();
-        }
+        };
+
+        game.rootScene.addChild(botton);
     };
     game.start();
 };
-
 var Player = enchant.Class.create(enchant.Sprite, {
     initialize: function() {
         enchant.Sprite.call(this, 138, 210);
