@@ -1,6 +1,6 @@
 enchant();
 
-var BORDER_POINT = 100000;
+var BORDER_POINT = 1000000;
 
 var game = null;
 var lootscene = null,
@@ -34,7 +34,7 @@ window.onload = function() {
 var Player = enchant.Class.create(enchant.Sprite, {
     initialize: function() {
         enchant.Sprite.call(this, 138, 210);
-        this.x = 50;
+        this.x = 220;
         this.y = 130;
         this.high = this.y,
             this.isJump = false;
@@ -152,19 +152,35 @@ var gameover = function(score) {
     resultTitle.y = 150;
     resultTitle.width = 700;
     resultTitle.color = '#fff';
-    resultTitle.font = "50px cursive";
+    resultTitle.font = "50px font";
     resultscene.addChild(resultTitle);
     var gameoverImage = new Label("タイトルに戻る");
     gameoverImage.x = 400;                                      // 横位置調整
     gameoverImage.y = 300;
     gameoverImage.width=700;
     gameoverImage.color = '#fff';
-    gameoverImage.font = "50px cursive";
+    gameoverImage.font = "50px font";
     resultscene.addChild(gameoverImage);
+    var tweet_label = new Label("");
+    tweet_label.font = "50px font";
+    tweet_label.x = 400;
+    tweet_label.y = 400;
+    tweet_label.color = '#FFF';
+    tweet_label.text = "Tweetする";
+    resultscene.addChild(tweet_label);
     game.replaceScene(resultscene);
+
     gameoverImage.ontouchstart = function() {
         game.popScene();
-    }
+    };
+
+    tweet_label.ontouchstart = (enchant.Event.TOUCH_START, function(){
+        var EUC = encodeURIComponent;
+        var twitter_url = "http://twitter.com/?status=";
+        var message ="The 女子走\n"+ "あなたのスコアは" + score + "です. 遊んでくれてありがとう!!";
+        location.href = twitter_url+ EUC(message);
+    });
+
 };
 
 var lootgame = function(){
@@ -198,7 +214,7 @@ var lootgame = function(){
     var pts = 0;
     var scorelabel = new Label("");
     scorelabel.color = '#000';
-    scorelabel.font = "40px cursive";
+    scorelabel.font = "40px font";
     scorelabel.moveTo( 10, 20 );
     lootscene.addChild(scorelabel);
 
@@ -212,7 +228,7 @@ var lootgame = function(){
                 // })
             // console.log('GAME OVER!!');
         }
-        pts = isEnd? pts : pts + parseInt(100*game.frame/game.fps);
+        pts = isEnd? pts : pts + parseInt(10*game.frame/game.fps);
         scorelabel.text = pts.toString()+'pts';
         if (!isEnd && (game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
             enemies.push(new Enemy());
@@ -249,11 +265,11 @@ var three = function(){
     counter = new Scene();
     counter.backgroundColor = 'rgba(0,0,0,0.2)';
     var name = new Label("3");
-    name.x = 300;
+    name.x = 600;
     name.y = 150;
     name.width = 700;
-    name.color = '#fff';
-    name.font = "50px cursive";
+    name.color = '#000';
+    name.font = "50px font";
     counter.addChild(name);
     game.pushScene(counter);
     counter.tl.delay(50)
@@ -266,11 +282,11 @@ var two = function(){
     counter = new Scene();
     counter.backgroundColor = 'rgba(0,0,0,0.2)';
     var name = new Label("2");
-    name.x = 300;
+    name.x = 600;
     name.y = 150;
     name.width = 700;
-    name.color = '#fff';
-    name.font = "50px cursive";
+    name.color = '#000';
+    name.font = "50px font";
     counter.addChild(name);
     game.replaceScene(counter);
     counter.tl.delay(50)
@@ -283,11 +299,11 @@ var one = function(){
     counter = new Scene();
     counter.backgroundColor = 'rgba(0,0,0,0.2)';
     var name = new Label("1");
-    name.x = 300;
+    name.x = 600;
     name.y = 150;
     name.width = 700;
-    name.color = '#fff';
-    name.font = "50px cursive";
+    name.color = '#000';
+    name.font = "50px font";
     counter.addChild(name);
     game.replaceScene(counter);
     counter.tl.delay(50)
