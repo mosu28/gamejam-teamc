@@ -208,7 +208,10 @@ var lootgame = function(){
             isEnd = true;
             school.speed = st1_speed = st2_speed = 0;
             player.tl.moveBy(100, -120, 40, enchant.Easing.CUBIC_EASEOUT)
-                .scaleBy(0, 40, enchant.Easing.CUBIC_EASEOUT);
+                .scaleBy(0, 40, enchant.Easing.CUBIC_EASEOUT)
+                .then(function() {
+                    window.location.href = "./ending.html";
+                });
         };
     });
     lootscene.addEventListener(Event.TOUCH_START, function(e) {
