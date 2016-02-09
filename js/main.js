@@ -34,7 +34,7 @@ window.onload = function() {
 var Player = enchant.Class.create(enchant.Sprite, {
     initialize: function() {
         enchant.Sprite.call(this, 138, 210);
-        this.x = 50;
+        this.x = 200;
         this.y = 130;
         this.high = this.y,
             this.isJump = false;
