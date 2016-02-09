@@ -12,6 +12,10 @@
         padding: 0;
         margin: 0;
       }
+      @font-face {
+           font-family:font;
+           src: url('img/typo-slab.bold-italic.otf') format("opentype");
+       }
     </style>
   </head>
   <body style="background: #000;">

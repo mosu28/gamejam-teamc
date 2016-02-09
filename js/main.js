@@ -152,14 +152,14 @@ var gameover = function(score) {
     resultTitle.y = 150;
     resultTitle.width = 700;
     resultTitle.color = '#fff';
-    resultTitle.font = "50px cursive";
+    resultTitle.font = "50px font";
     resultscene.addChild(resultTitle);
     var gameoverImage = new Label("タイトルに戻る");
     gameoverImage.x = 400;                                      // 横位置調整
     gameoverImage.y = 300;
     gameoverImage.width=700;
     gameoverImage.color = '#fff';
-    gameoverImage.font = "50px cursive";
+    gameoverImage.font = "50px font";
     resultscene.addChild(gameoverImage);
     game.replaceScene(resultscene);
     gameoverImage.ontouchstart = function() {
@@ -198,7 +198,7 @@ var lootgame = function(){
     var pts = 0;
     var scorelabel = new Label("");
     scorelabel.color = '#000';
-    scorelabel.font = "40px cursive";
+    scorelabel.font = "40px font";
     scorelabel.moveTo( 10, 20 );
     lootscene.addChild(scorelabel);
 
@@ -249,11 +249,11 @@ var three = function(){
     counter = new Scene();
     counter.backgroundColor = 'rgba(0,0,0,0.2)';
     var name = new Label("3");
-    name.x = 300;
+    name.x = 600;
     name.y = 150;
     name.width = 700;
-    name.color = '#fff';
-    name.font = "50px cursive";
+    name.color = '#000';
+    name.font = "50px font";
     counter.addChild(name);
     game.pushScene(counter);
     counter.tl.delay(50)
@@ -266,11 +266,11 @@ var two = function(){
     counter = new Scene();
     counter.backgroundColor = 'rgba(0,0,0,0.2)';
     var name = new Label("2");
-    name.x = 300;
+    name.x = 600;
     name.y = 150;
     name.width = 700;
-    name.color = '#fff';
-    name.font = "50px cursive";
+    name.color = '#000';
+    name.font = "50px font";
     counter.addChild(name);
     game.replaceScene(counter);
     counter.tl.delay(50)
@@ -283,11 +283,11 @@ var one = function(){
     counter = new Scene();
     counter.backgroundColor = 'rgba(0,0,0,0.2)';
     var name = new Label("1");
-    name.x = 300;
+    name.x = 600;
     name.y = 150;
     name.width = 700;
-    name.color = '#fff';
-    name.font = "50px cursive";
+    name.color = '#000';
+    name.font = "50px font";
     counter.addChild(name);
     game.replaceScene(counter);
     counter.tl.delay(50)
