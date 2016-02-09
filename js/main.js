@@ -18,6 +18,7 @@ window.onload = function() {
     game.preload('./img/start.png');
     game.preload('./img/Otaku.png');
     game.preload('./img/school.png');
+    game.preload('./img/Enemy2.png');
     game.onload = function() {
         var botton = new Sprite(236,48);
         botton.image = game.assets['./img/start.png'];
@@ -119,6 +120,27 @@ var School = enchant.Class.create(enchant.Sprite, {
     }
 });
 
+var Enemy2 = enchant.Class.create(enchant.Sprite, {
+    initialize: function() {
+        enchant.Sprite.call(this, 140, 206);
+        this.x = 1500;
+        this.y = 130;
+        this.image = game.assets['./img/Enemy2.png'];
+        this.frame = 2;
+        this.kuma = new Sprite(20, 100);
+        this.kuma.x = 1500;
+        this.kuma.y = this.y + 40;
+        lootscene.addChild(this.kuma);
+        this.onenterframe = this.kuma.onenterframe = function() {
+            this.x -= 5;
+        }
+    },
+    punch: function() {
+        this.isPunch = true;
+        this.frame = 2;
+    }
+});
+
 function checkIntersect(player, enemies) {
     for (var i = 0;i < enemies.length;i++) {
         if (enemies[i].otaku !== null && player.within(enemies[i].otaku, 118)) {
@@ -128,13 +150,14 @@ function checkIntersect(player, enemies) {
     return false;
 }
 
-function removeAvoidance(player, enemies) {
-    // for (var i = 0;i < enemies.length;i++) {
-    //     if (player.x > enemies[i].otaku.x) {
-    //         enemies[i]
-    //         lootscene.removeChild(enemies[i]);
-    //     }
-    // }
+function checkIntersect2(player, enemies) {
+    for (var i = 0;i < enemies.length;i++) {
+        if (enemies[i] !== null && enemies[i].kuma.within(player, 20)) {
+            enemies[i].frame = 2;
+            return true;
+        }
+    }
+    return false;
 }
 
 function removeEnemies(enemies) {
@@ -205,7 +228,7 @@ var lootgame = function(){
     lootscene.addChild(street1);
     lootscene.addChild(street2);
     var player = new Player();
-    var enemies = [];
+    var enemies = [], enemies2 = [];
     var school = null;
     var isEnd = false;
     lootscene.addChild(player);
@@ -220,7 +243,7 @@ var lootgame = function(){
 
     lootscene.addEventListener(Event.ENTER_FRAME, function() {
         player.walk();
-        if (checkIntersect(player, enemies)) {
+        if (checkIntersect(player, enemies) || checkIntersect2(player, enemies2)) {
             // player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
             //     .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN)
             //     .then(function(){
@@ -230,9 +253,15 @@ var lootgame = function(){
         }
         pts = isEnd? pts : pts + parseInt(10*game.frame/game.fps);
         scorelabel.text = pts.toString()+'pts';
+
         if (!isEnd && (game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
             enemies.push(new Enemy());
             lootscene.insertBefore(enemies[enemies.length - 1], player);
+        } else if (!isEnd && (game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
+            var enemy2 = new Enemy2();
+            enemy2.player = player;
+            enemies2.push(enemy2);
+            lootscene.insertBefore(enemies2[enemies2.length - 1], player);
         }
 
         if (pts > BORDER_POINT && school == null) {
@@ -240,7 +269,6 @@ var lootgame = function(){
             school = new School();
             lootscene.insertBefore(school, enemies[enemies.length - 1]);
         }
-        removeAvoidance(player, enemies);
         if (school !== null && player.intersect(school)) {
             removeEnemies(enemies);
         }
