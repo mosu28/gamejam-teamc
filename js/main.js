@@ -27,7 +27,7 @@ window.onload = function() {
         botton.ontouchstart = function() {
             lootgame();
         }
-    }
+    };
     game.start();
 };
 
@@ -179,13 +179,13 @@ var lootgame = function(){
             street1.moveTo(game.width, 0);
         }
         street1.x -= st1_speed;
-    }
+    };
     street2.onenterframe = function() {
         if (street1.x + street1.width == game.width) {
             street2.moveTo(game.width, 0);
         }
         street2.x -= st2_speed;
-    }
+    };
     lootscene.addChild(street1);
     lootscene.addChild(street2);
     var player = new Player();
@@ -198,6 +198,7 @@ var lootgame = function(){
     var pts = 0;
     var scorelabel = new Label("");
     scorelabel.color = '#000';
+    scorelabel.font = "40px cursive";
     scorelabel.moveTo( 10, 20 );
     lootscene.addChild(scorelabel);
 
@@ -231,11 +232,66 @@ var lootgame = function(){
             isEnd = true;
             school.speed = st1_speed = st2_speed = 0;
             player.tl.moveBy(100, -120, 40, enchant.Easing.CUBIC_EASEOUT)
-                .scaleBy(0, 40, enchant.Easing.CUBIC_EASEOUT);
-        };
+                .scaleBy(0, 40, enchant.Easing.CUBIC_EASEOUT)
+                .then(function() {
+                    window.location.href = "./ending.html";
+                });
+        }
     });
     lootscene.addEventListener(Event.TOUCH_START, function(e) {
         player.jump();
     });
     game.pushScene(lootscene);
-}
+    three();
+};
+
+var three = function(){
+    counter = new Scene();
+    counter.backgroundColor = 'rgba(0,0,0,0.2)';
+    var name = new Label("3");
+    name.x = 300;
+    name.y = 150;
+    name.width = 700;
+    name.color = '#fff';
+    name.font = "50px cursive";
+    counter.addChild(name);
+    game.pushScene(counter);
+    counter.tl.delay(50)
+        .then(function() {
+           two();
+        });
+};
+
+var two = function(){
+    counter = new Scene();
+    counter.backgroundColor = 'rgba(0,0,0,0.2)';
+    var name = new Label("2");
+    name.x = 300;
+    name.y = 150;
+    name.width = 700;
+    name.color = '#fff';
+    name.font = "50px cursive";
+    counter.addChild(name);
+    game.replaceScene(counter);
+    counter.tl.delay(50)
+        .then(function() {
+            one();
+        });
+};
+
+var one = function(){
+    counter = new Scene();
+    counter.backgroundColor = 'rgba(0,0,0,0.2)';
+    var name = new Label("1");
+    name.x = 300;
+    name.y = 150;
+    name.width = 700;
+    name.color = '#fff';
+    name.font = "50px cursive";
+    counter.addChild(name);
+    game.replaceScene(counter);
+    counter.tl.delay(50)
+        .then(function() {
+            game.popScene();
+        });
+};
