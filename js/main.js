@@ -21,7 +21,8 @@ window.onload = function() {
     game.onload = function() {
         var botton = new Sprite(236,48);
         botton.image = game.assets['./img/start.png'];
-        botton.moveTo(400,300);
+        botton.x = 50;
+        botton.y = 100;
         game.rootScene.addChild(botton);
         botton.ontouchstart = function() {
             lootgame();
