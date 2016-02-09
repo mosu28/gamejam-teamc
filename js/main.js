@@ -161,10 +161,26 @@ var gameover = function(score) {
     gameoverImage.color = '#fff';
     gameoverImage.font = "50px font";
     resultscene.addChild(gameoverImage);
+    var tweet_label = new Label("");
+    tweet_label.font = "50px font";
+    tweet_label.x = 400;
+    tweet_label.y = 400;
+    tweet_label.color = '#FFF';
+    tweet_label.text = "Tweetする";
+    resultscene.addChild(tweet_label);
     game.replaceScene(resultscene);
+
     gameoverImage.ontouchstart = function() {
         game.popScene();
-    }
+    };
+
+    tweet_label.ontouchstart = (enchant.Event.TOUCH_START, function(){
+        var EUC = encodeURIComponent;
+        var twitter_url = "http://twitter.com/?status=";
+        var message ="The 女子走\n"+ "あなたのスコアは" + score + "です. 遊んでくれてありがとう!!";
+        location.href = twitter_url+ EUC(message);
+    });
+
 };
 
 var lootgame = function(){
