@@ -49,10 +49,10 @@ var Player = enchant.Class.create(enchant.Sprite, {
         this.tl.moveBy(0, -160, 20, enchant.Easing.CUBIC_EASEOUT)
             .moveBy(0, 160, 20, enchant.Easing.CUBIC_EASEIN);
     },
-    dead:function(){
+    dead:function(score){
         alert('GAME OVER!!');
         this.frame = 3;
-        gameover();
+        gameover(score);
     }
 });
 
@@ -132,15 +132,22 @@ function removeEnemies(enemies) {
 var gameover = function(score) {
     resultscene = new Scene();
     resultscene.backgroundColor = 'rgba(0,0,0,1)';
-    var gameoverImage = new Label("うわああああん疲れたもおおおん");
+    var resultTitle = new Label("獲得スコア: " + score);
+    resultTitle.x = 300;
+    resultTitle.y = 150;
+    resultTitle.width = 700;
+    resultTitle.color = '#fff';
+    resultTitle.font = "50px cursive";
+    resultscene.addChild(resultTitle);
+    var gameoverImage = new Label("タイトルに戻る");
     gameoverImage.x = 400;                                      // 横位置調整
-    gameoverImage.y = 200;
+    gameoverImage.y = 300;
     gameoverImage.width=700;
     gameoverImage.color = '#fff';
     gameoverImage.font = "50px cursive";
     resultscene.addChild(gameoverImage);
     game.replaceScene(resultscene);
-    resultscene.ontouchstart = function() {
+    gameoverImage.ontouchstart = function() {
         game.popScene();
     }
 };
@@ -181,6 +188,14 @@ var lootgame = function(){
 
     lootscene.addEventListener(Event.ENTER_FRAME, function() {
         player.walk();
+        if (checkIntersect(player, enemies)) {
+            // player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
+            //     .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN)
+            //     .then(function(){
+                    player.dead(scorelabel.text);
+                // })
+            // console.log('GAME OVER!!');
+        }
         pts = isEnd? pts : pts + parseInt(100*game.frame/game.fps);
         scorelabel.text = pts.toString()+'pts';
         if (!isEnd && (game.frame % (game.fps * 2) == 0) && Math.floor(Math.random() * 11) >= 4) {
@@ -188,14 +203,6 @@ var lootgame = function(){
             lootscene.insertBefore(enemies[enemies.length - 1], player);
         }
 
-        if (checkIntersect(player, enemies)) {
-            // player.tl.moveBy(0, -50, 3, enchant.Easing.CUBIC_EASEOUT)
-            //     .moveBy(0, 300, 5, enchant.Easing.CUBIC_EASEIN)
-            //     .then(function(){
-                    player.dead();
-                // })
-            // console.log('GAME OVER!!');
-        }
         if (pts > BORDER_POINT && school == null) {
             isSchool = true;
             school = new School();
